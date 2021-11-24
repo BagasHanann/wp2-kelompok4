@@ -9,7 +9,7 @@ class Auth extends CI_Controller
             redirect('user');
         }
         $data['title'] = 'User Login';
-        $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+        $this->form_validation->set_rules('email', 'Email', 'trim|required');
         $this->form_validation->set_rules('password', 'Password', 'trim|required');
         if ( $this->form_validation->run() == FALSE) {
              $this->load->view('templates/auth_header', $data);
