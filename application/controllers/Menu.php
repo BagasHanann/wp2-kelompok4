@@ -26,4 +26,39 @@ class Menu extends CI_Controller
         $this->load->view('templates/footer');      
     }
 
+    public function submenu()
+    {
+        $data['title'] = 'Sub Menu Management';
+        // menampilkan data user SELECT * FROM user WHERE email -> session userdata email
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['subMenu'] = $this->menuModel->getSubMenu();
+        $data['menu'] =  $this->db->get('user_menu')->result_array();
+        
+        $this->form_validation->set_rules('title', 'Title', 'required');
+        $this->form_validation->set_rules('menu_id', 'Menu', 'required');
+        $this->form_validation->set_rules('url', 'URL', 'required');
+        $this->form_validation->set_rules('icon', 'Icon', 'required');
+        
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('menu/submenu', $data);
+            $this->load->view('templates/footer');
+        } else {
+            $data = [
+                'title' => $this->input->post('title'),  
+                'menu_id' => $this->input->post('menu_id'),   
+                'url' => $this->input->post('url'),   
+                'icon' => $this->input->post('icon'),   
+                'is_active' => $this->input->post('is_active')   
+            ];
+            
+            $this->db->insert('user_sub_menu', $data);
+            // membuat flash data, jika berhasil ditambahkan akan muncul alert
+            $this->session->set_flashdata('message', 'Added');
+            // diarahkan menuju ke menu
+            redirect('menu/submenu');
+        }
+    }
 }
