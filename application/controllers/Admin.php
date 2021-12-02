@@ -7,6 +7,7 @@ class Admin extends CI_Controller
     {
         parent::__construct();
         is_logged_in(); 
+        $this->load->model('model_admin');
     }
     
     public function index()
@@ -14,6 +15,8 @@ class Admin extends CI_Controller
         $data['title'] = 'Dashboard';
         // menampilkan data user SELECT * FROM user WHERE email -> session userdata email
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['total'] = $this->model_admin->hitungJumlahMhs();
+        $data['totalSubMenu'] = $this->model_admin->hitungJumlahSubmenu();
         
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
