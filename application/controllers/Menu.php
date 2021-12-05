@@ -61,4 +61,32 @@ class Menu extends CI_Controller
             redirect('menu/submenu');
         }
     }
+
+    public function editSubmenu($id)
+    {
+        $data['title'] = 'Sub Menu Management';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        $data['menu'] =  $this->db->get('user_menu')->result_array();
+
+        $data['user_sub_menu'] = $this->menuModel->getSubMenuById($id);
+        
+        $this->form_validation->set_rules('title', 'Title', 'required');
+        $this->form_validation->set_rules('url', 'URL', 'required');
+        $this->form_validation->set_rules('icon', 'Icon', 'required');
+        
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('menu/editSubmenu', $data);
+            $this->load->view('templates/footer');
+        } else {
+            // membuat 'tambahDataMhs' yang ada di 'model'
+            $this->menuModel->editSubMenu();
+            // membuat flash data, jika berhasil ditambahkan akan muncul alert
+            $this->session->set_flashdata('message', 'Updated');
+            // diarahkan menuju ke data mahasiswa
+            redirect('menu/submenu');
+        }
+    }
 }

@@ -43,4 +43,15 @@ class Auth extends CI_Controller
             }
         }
     }
+
+    public function logout()
+    {
+        // membersihkan session, dan kembali ke halaman login       
+        $this->session->unset_userdata('email');
+        $this->session->unset_userdata('role_id');
+        
+        // beri pesan, dan kembali ke halaman login
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">You have been logout</div>');
+        redirect('auth');
+    }
 }
