@@ -89,4 +89,53 @@ class Menu extends CI_Controller
             redirect('menu/submenu');
         }
     }
+
+    public function mhs()
+    {
+        // membuat title browser menjadi 'Daftar mahasiswa'
+        $data['title'] = 'Daftar Mahasiswa';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        // select * from user_menu
+        $data['menu'] = $this->db->get('user_menu')->result_array();
+        // membuat file yang ada di model dengan nama 'Mahasiswa_model', untuk memanggil 'getAllMahasiswa'
+        $data['mhs'] = $this->menuModel->getAllMahasiswa();
+        
+        // membuat pagination
+        $config['total_rows'] = $this->menuModel->pagination();
+        $config['per_page'] = 4;
+
+        $this->pagination->initialize($config); 
+        // memulai data
+        $data['start'] = $this->uri->segment(4);
+        // memanggil model untuk membuat pagination
+        $data['mhs'] = $this->menuModel->getMhs($config['per_page'], $data['start']);
+
+        // membuat pengkondisian, jika fitur searchingnya di klik akan menampilkan data mahasiswa sesuai keyword
+        if ( $this->input->post('keyword') ) {
+            $data['mhs'] = $this->menuModel->search();
+        }
+
+        $this->form_validation->set_rules('nim', 'NIM', 'required|numeric');
+        $this->form_validation->set_rules('nama', 'Nama', 'required');
+        $this->form_validation->set_rules('alamat', 'Alamat', 'required');
+        $this->form_validation->set_rules('no_telp', 'No Telp', 'required|numeric');
+
+        // membuat pengkondisian jika form_validationnya dijalankan dan nilainya FALSE, maka hasilnya akan menampilkan view mahasiswa
+        if ($this->form_validation->run() == FALSE) {
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('menu/mhs', $data);
+        $this->load->view('templates/footer');
+        }
+        // jika hasilnya benar, akan menambahkan data mahasiswa yang dibuat di 'model'
+        else {
+            // membuat 'tambahDataMhs' yang ada di 'model'
+            $this->menuModel->tambahDataMhs();
+            // membuat flash data, jika berhasil ditambahkan akan muncul alert
+            $this->session->set_flashdata('message', 'Added');
+            // diarahkan menuju ke data mahasiswa
+            redirect('menu/mhs');
+        }
+    }
 }
