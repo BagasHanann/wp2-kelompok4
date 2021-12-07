@@ -189,4 +189,36 @@ class Menu extends CI_Controller
         $this->load->view('menu/detail', $data);
         $this->load->view('templates/footer');
     }
+
+    // membuat fungsi hapus untuk menu management
+    public function hapus($id)
+    {
+        // membuat 'hapusDataMhs' yang ada di 'model'
+        $this->menuModel->hapusMenu($id);
+        // membuat flash data, jika berhasil dihapus akan muncul alert
+        $this->session->set_flashdata('message','Deleted');
+        // diarahkan menuju ke data menu
+        redirect('menu');
+    }
+    
+    public function hapusSubMenu($id)
+    {
+        // membuat 'hapusDataMhs' yang ada di 'model'
+        $this->menuModel->hapusMenu($id);
+        // membuat flash data, jika berhasil dihapus akan muncul alert
+        $this->session->set_flashdata('message','Deleted');
+        // diarahkan menuju ke data menu
+        redirect('menu/submenu');
+    }
+
+    // membuat fungsi hapus yang parameternya berisi id, untuk mengambil data dari url
+    public function delete($id)
+    {
+        // membuat 'hapusDataMhs' yang ada di 'model'
+        $this->menuModel->hapusMenu($id);
+        // membuat flash data, jika berhasil dihapus akan muncul alert
+        $this->session->set_flashdata('message','Deleted');
+        // diarahkan menuju ke data mahasiswa
+        redirect('menu/mhs');
+    }
 }
