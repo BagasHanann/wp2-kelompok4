@@ -138,4 +138,55 @@ class Menu extends CI_Controller
             redirect('menu/mhs');
         }
     }
+
+    public function edit($id)
+    {
+        // membuat title browser menjadi 'Daftar mahasiswa'
+        $data['title'] = 'Edit Data Mahasiswa';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        // select * from user_menu
+        $data['menu'] = $this->db->get('user_menu')->result_array();
+        // membuat file yang ada di model dengan nama 'Mahasiswa_model' untuk memanggil getMahasiswaById
+        $data['mhs'] = $this->menuModel->getMahasiswaById($id);
+        // membuat data array yang berisikan nama jurusan 
+        $data['jurusan'] = ['Sistem Informasi', 'Teknik Informatika', 'Ilmu Komunikasi', 'Sastra Inggris', 'Manajemen', 'Akuntansi'];
+
+        $this->form_validation->set_rules('nim', 'NIM', 'required|numeric');
+        $this->form_validation->set_rules('nama', 'Nama', 'required');
+        $this->form_validation->set_rules('alamat', 'Alamat', 'required');
+        $this->form_validation->set_rules('no_telp', 'No Telp', 'required|numeric');
+
+        // membuat pengkondisian jika form_validationnya dijalankan dan nilainya FALSE, maka hasilnya akan menampilkan view mahasiswa
+        if ($this->form_validation->run() == FALSE) {
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('menu/edit', $data);
+        $this->load->view('templates/footer');
+        }
+        // jika hasilnya benar, akan menambahkan data mahasiswa yang dibuat di 'model'
+        else {
+            // membuat 'tambahDataMhs' yang ada di 'model'
+            $this->menuModel->editDataMhs();
+            // membuat flash data, jika berhasil ditambahkan akan muncul alert
+            $this->session->set_flashdata('message', 'Updated');
+            // diarahkan menuju ke data mahasiswa
+            redirect('menu/mhs');
+        }
+    }
+
+    // membuat controller detail
+    public function detail($id)
+    {
+        $data['title'] = 'Detail Mahasiswa';
+        $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+        // select * from user_menu
+        $data['menu'] = $this->db->get('user_menu')->result_array();
+        $data['mhs'] = $this->menuModel->getMahasiswaById($id);
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('menu/detail', $data);
+        $this->load->view('templates/footer');
+    }
 }
