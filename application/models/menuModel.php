@@ -45,8 +45,7 @@ class menuModel extends CI_Model {
     public function editSubMenu()
     {
         $data = [
-            "title" => $this->input->post('title', true),     
-            "menu_id" => $this->input->post('menu_id', true),     
+            "title" => $this->input->post('title', true),   
             "url" => $this->input->post('url', true),   
             "icon" => $this->input->post('icon', true),   
         ];
