@@ -58,6 +58,11 @@
         $(this).next('.custom-file-label').addClass("selected").html(fileName);
         });
     </script>
+
+    <!-- sweetalert -->
+    <script src="<?= base_url('assets/'); ?>js/sweetalert2.all.min.js"></script>
+    <script src="<?= base_url('assets/'); ?>js/myscript.js"></script>
+    
 </body>
 
 </html>
