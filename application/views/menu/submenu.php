@@ -32,7 +32,7 @@
                     <td><?= $sm['icon']; ?></td>
                     <td><?= $sm['is_active']; ?></td>
                     <td>
-                        <a href="" class="btn btn-success">Edit</a>
+                        <a href="<?= base_url()?>menu/editSubmenu/<?= $sm['id']; ?>" class="btn btn-success">Edit</a>
                         <a href="<?= base_url()?>menu/hapusSubMenu/<?= $sm['id']; ?>" class="btn btn-danger tombol-hapus">Delete</a>
                     </td>
                     </tr>
