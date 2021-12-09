@@ -16,7 +16,6 @@ class Admin extends CI_Controller
         // menampilkan data user SELECT * FROM user WHERE email -> session userdata email
         $data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
         $data['total'] = $this->model_admin->hitungJumlahMhs();
-        $data['totalSubMenu'] = $this->model_admin->hitungJumlahSubmenu();
         
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
