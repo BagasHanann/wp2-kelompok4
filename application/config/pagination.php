@@ -1,6 +1,6 @@
 <?php
 
-    $config['base_url'] = 'http://localhost/ci-mhs/menu/mhs/index';
+    $config['base_url'] = 'http://localhost/wp2-kelompok4/menu/mhs/index';
 
     // styling
     $config['full_tag_open'] = '<nav><ul class="pagination justify-content-center">';
