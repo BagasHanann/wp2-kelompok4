@@ -79,4 +79,5 @@ class User extends CI_Controller
             $this->session->set_flashdata('message', 'Updated');
             redirect('user');
         }
+    }
 }
